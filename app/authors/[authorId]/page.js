@@ -109,7 +109,7 @@ const AuthorBlogsPage = () => {
         </button>
 
         <h1 className="text-3xl font-bold text-amber-800 mb-2">
-          {state.authorName}'s Blogs
+          {state.authorName} Blogs
         </h1>
         <p className="text-gray-600 mb-6">
           {state.blogs.length} {state.blogs.length === 1 ? "article" : "articles"}
