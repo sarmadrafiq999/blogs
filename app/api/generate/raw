@@ -1,0 +1,75 @@
+import { NextResponse } from "next/server";
+
+export async function POST(req) {
+  try {
+    const { title } = await req.json();
+
+    if (!title || title.trim() === "") {
+      return NextResponse.json({ message: "Title is required" }, { status: 400 });
+    }
+
+    // 📝 Generate blog content using OpenRouter (GPT-3.5)
+    const response = await fetch("https://openrouter.ai/api/v1/chat/completions", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${process.env.OPENROUTER_API_KEY}`,
+      },
+      body: JSON.stringify({
+        model: "openai/gpt-3.5-turbo",
+        messages: [
+          {
+            role: "user",
+            content: `Write a detailed, markdown-formatted blog post about: "${title}". Include a heading, subheadings, bullet points, and conclusion.`,
+          },
+        ],
+      }),
+    });
+
+    const data = await response.json();
+    const content = data.choices?.[0]?.message?.content;
+
+    if (!content) {
+      return NextResponse.json({ message: "Failed to generate content." }, { status: 500 });
+    }
+
+    // 🖼 Generate 3 images using Hugging Face Nebius (text-to-image)
+    const imageUrls = await Promise.all(
+      [1, 2, 3].map(async (_, idx) => {
+        try {
+          const imageRes = await fetch("https://router.huggingface.co/nebius/v1/images/generations", {
+            method: "POST",
+            headers: {
+              Authorization: `Bearer ${process.env.HUGGINGFACE_API_KEY}`,
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              prompt: `An artistic blog illustration about: "${title}"`,
+              model: "stability-ai/sdxl",
+              response_format: "b64_json",
+            }),
+          });
+
+          if (!imageRes.ok) throw new Error(`HuggingFace error: ${imageRes.statusText}`);
+
+          const result = await imageRes.json();
+
+          if (!result.data || !result.data[0]?.b64_json) {
+            throw new Error("No image returned");
+          }
+
+          return `data:image/png;base64,${result.data[0].b64_json}`;
+        } catch (err) {
+          console.warn(`Image ${idx + 1} generation failed:`, err.message);
+          // Fallback image
+          return `https://placehold.co/600x400?text=Blog+Image+${idx + 1}`;
+        }
+      })
+    );
+
+    return NextResponse.json({ output: content, imageUrls });
+  } catch (error) {
+    console.error("Error generating blog:", error);
+    return NextResponse.json({ message: "Internal Server Error" }, { status: 500 });
+  }
+}
