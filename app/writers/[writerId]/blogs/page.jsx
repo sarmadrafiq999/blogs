@@ -1,17 +1,17 @@
-"use client";
+// "use client";
 
-import Navbar from "../../../../components/Navbar";
-import FavWriterBlogsList from "../../../../components/FavWriterBlogsList";
+// import Navbar from "../../../../components/Navbar";
+// import FavWriterBlogsList from "../../../../components/FavWriterBlogsList";
 
-export default function WriterBlogsPage({ params }) {
-  const { writerId } = params;
+// export default function WriterBlogsPage({ params }) {
+//   const { writerId } = params;
 
-  return (
-    <>
-      <Navbar />
-      <div className="max-w-4xl mx-auto py-8 px-4">
-        <FavWriterBlogsList writerId={writerId} />
-      </div>
-    </>
-  );
-}
+//   return (
+//     <>
+//       <Navbar />
+//       <div className="max-w-4xl mx-auto py-8 px-4">
+//         <FavWriterBlogsList writerId={writerId} />
+//       </div>
+//     </>
+//   );
+// }
