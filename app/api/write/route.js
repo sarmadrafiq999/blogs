@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
-import dbConnect from "@/lib/dbConnect";
-import Blog from "@/models/Blog";
+import dbConnect from "../../../lib/dbConnect";
+import Blog from "../../../models/Blog";
 
 export async function POST(req) {
   try {
