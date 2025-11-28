@@ -22,11 +22,14 @@ export default function AllBlogsPage() {
   if (user?.publicMetadata?.role !== "admin") return null;
 
   return (
-    <div className="p-6 mt-25 bg-gradient-to-b to-blue-50 min-h-screen">
+    <div className="p-6 pt-28 min-h-screen bg-gradient-to-b from-black via-zinc-900 to-black text-white">
       <div className="flex justify-center">
-        <Tittle text1={"All"} text2={"Blogs"} />
+        <Tittle text1={"All"} text2={"Blogs"} dark={true} />
       </div>
-      <AllBlogsList />
+
+      <div className="mt-8">
+        <AllBlogsList dark={true} />
+      </div>
     </div>
   );
 }

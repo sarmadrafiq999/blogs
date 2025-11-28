@@ -10,7 +10,7 @@ import ImageDragResizeHandler from "../../../../components/ImageDragResizeHandle
 import { toast } from "react-toastify";
 
 export default function EditBlogPage() {
-    const [checkingAuth, setCheckingAuth] = useState(true); // ✅ add this
+  const [checkingAuth, setCheckingAuth] = useState(true);
 
   const editorRef = useRef(null);
   const { id } = useParams();
@@ -26,42 +26,39 @@ export default function EditBlogPage() {
   const [uploadingIndex, setUploadingIndex] = useState(null);
 
   // ✅ Fetch blog data on mount
-useEffect(() => {
-  const fetchBlog = async () => {
-    try {
-      const res = await fetch(`/api/bloglist/${id}`);
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.error || "Failed to fetch blog");
+  useEffect(() => {
+    const fetchBlog = async () => {
+      try {
+        const res = await fetch(`/api/bloglist/${id}`);
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.error || "Failed to fetch blog");
 
-      // ✅ Check if the current user is the author
-      if (data.blog.authorId !== user?.id) {
-        toast.error("You are not authorized to edit this blog");
-        router.push("/"); // Redirect to home or dashboard
-        return;
+        // ✅ Check if the current user is the author
+        if (data.blog.authorId !== user?.id) {
+          toast.error("You are not authorized to edit this blog");
+          router.push("/");
+          return;
+        }
+
+        setFormData({
+          title: data.blog.title,
+          content: data.blog.content,
+          images: data.blog.images || [],
+        });
+
+        if (editorRef.current) {
+          editorRef.current.innerHTML = data.blog.content || "";
+        }
+      } catch (err) {
+        toast.error(err.message);
+        router.push("/");
+      } finally {
+        setCheckingAuth(false);
       }
+    };
 
-      setFormData({
-        title: data.blog.title,
-        content: data.blog.content,
-        images: data.blog.images || [],
-      });
-
-      if (editorRef.current) {
-        editorRef.current.innerHTML = data.blog.content || "";
-      }
-    } catch (err) {
-      toast.error(err.message);
-      router.push("/"); // Redirect if error occurs
-    } finally {
-      setCheckingAuth(false); // ✅ done checking
-    }
-  };
-
-  if (id && user) fetchBlog();
-}, [id, user]);
-
-
-
+    if (id && user) fetchBlog();
+  }, [id, user]);
 
   // ✅ Replace Image
   const handleImageUpload = async (e, index) => {
@@ -149,25 +146,25 @@ useEffect(() => {
       setLoading(false);
     }
   };
+
   if (checkingAuth) {
-  return (
-    <div className="min-h-screen flex items-center justify-center">
-      <p className="text-lg font-semibold">Checking permissions...</p>
-    </div>
-  );
-}
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-b from-[#0b0b0d] via-[#121214] to-[#1a1a1f] text-gray-200">
+        <p className="text-lg font-semibold">Checking permissions...</p>
+      </div>
+    );
+  }
 
-
   return (
-    <div>
+    <div className="bg-gradient-to-b from-[#0b0b0d] via-[#121214] to-[#1a1a1f] min-h-screen text-gray-200">
       <Navbar />
-      <div className="max-w-4xl mx-auto mt-20 p-4">
-        <h1 className="text-2xl font-bold mb-4">Edit Blog</h1>
+      <div className="max-w-4xl mx-auto mt-15 p-4">
+        <h1 className="text-2xl font-bold mb-4 text-amber-400">Edit Blog</h1>
 
         {/* Title */}
         <input
           type="text"
-          className="w-full p-2 border rounded mb-4"
+          className="w-full p-2 border border-gray-700 rounded mb-4 bg-[#1a1a1f] text-gray-200"
           value={formData.title}
           onChange={(e) =>
             setFormData((prev) => ({ ...prev, title: e.target.value }))
@@ -178,13 +175,13 @@ useEffect(() => {
         <TextEditorToolbar editorRef={editorRef} />
         <TextAlignmentToolbar editorRef={editorRef} />
 
-        {/* ✅ Editor with ImageDragResizeHandler */}
-        <div className="relative">
+        {/* Editor */}
+        <div className="relative mt-2">
           <div
             ref={editorRef}
             contentEditable
             suppressContentEditableWarning
-            className="w-full min-h-[250px] p-3 border rounded-lg mt-2 bg-white"
+            className="w-full min-h-[250px] p-3 border border-gray-700 rounded-lg bg-[#1a1a1f] text-gray-200"
             onInput={(e) =>
               setFormData((prev) => ({
                 ...prev,
@@ -192,11 +189,10 @@ useEffect(() => {
               }))
             }
           />
-          {/* 👇 Add the drag/resize behavior here */}
           <ImageDragResizeHandler editorRef={editorRef} />
         </div>
 
-        {/* Image Gallery with Replace */}
+        {/* Image Gallery */}
         <div className="grid grid-cols-3 gap-4 mt-4">
           {formData.images.map((src, i) => (
             <div key={i} className="relative group">
@@ -212,7 +208,7 @@ useEffect(() => {
                 </div>
               )}
 
-              <label className="absolute bottom-1 left-1 bg-blue-500 text-white text-xs px-2 py-1 rounded cursor-pointer opacity-0 group-hover:opacity-100">
+              <label className="absolute bottom-1 left-1 bg-amber-600 text-white text-xs px-2 py-1 rounded cursor-pointer opacity-0 group-hover:opacity-100">
                 Replace
                 <input
                   type="file"
@@ -229,7 +225,7 @@ useEffect(() => {
         <button
           onClick={handleUpdate}
           disabled={loading}
-          className="mt-6 px-4 py-2 bg-green-600 text-white rounded-lg"
+          className="mt-6 px-4 py-2 bg-amber-500 hover:bg-amber-600 text-white rounded-lg transition"
         >
           {loading ? "Updating..." : "Update Blog"}
         </button>

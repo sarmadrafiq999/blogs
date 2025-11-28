@@ -23,7 +23,7 @@ export default function ClerkUsersList() {
       .finally(() => setLoading(false));
   }, []);
 
-  // Filter by search (name or email)
+  // Filter by search
   useEffect(() => {
     const query = search.toLowerCase();
     setFilteredUsers(
@@ -35,12 +35,13 @@ export default function ClerkUsersList() {
     );
   }, [search, users]);
 
-  // Delete Clerk user
+  // Delete user
   const deleteUser = async (userId) => {
-    // if (!confirm("Are you sure you want to delete this user?")) return;
-
     try {
-      const res = await fetch(`/api/admin/users/${userId}`, { method: "DELETE" });
+      const res = await fetch(`/api/admin/users/${userId}`, {
+        method: "DELETE",
+      });
+
       const data = await res.json();
 
       if (data.success) {
@@ -55,65 +56,90 @@ export default function ClerkUsersList() {
   };
 
   return (
-    <div className="p-8 mt-20 min-h-screen">
-      <h2 className="text-2xl font-bold text-center mb-6">All Clerk Users</h2>
+   <div className="p-8 mt-20 min-h-screen w-full
+bg-gradient-to-b from-black via-gray-900 to-black text-gray-100">
 
-      {/* Search Bar */}
-      <div className="flex justify-center mb-6">
-        <input
-          type="text"
-          placeholder="Search by name or email..."
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-          className="w-full sm:w-1/2 px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
-        />
-      </div>
+  {/* Page Title */}
+  <h2 className="text-3xl font-extrabold text-center mb-10 tracking-wide
+  text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-orange-400">
+    All Clerk Users
+  </h2>
 
-      {/* Loader */}
-      {loading ? (
-        <div className="flex justify-center items-center h-64">
-        <Loader/>
-        </div>
-      ) : (
-        // Users List
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {filteredUsers.length > 0 ? (
-            filteredUsers.map((user) => (
-              <div
-                key={user.id}
-                className="relative p-6 bg-white border border-gray-200 rounded-2xl shadow-md hover:shadow-xl transition-transform duration-300"
-              >
-                <div className="flex items-center space-x-4 mb-4">
-                  <img
-                    src={user.imageUrl}
-                    alt={user.fullName}
-                    className="w-12 h-12 rounded-full"
-                  />
-                  <div>
-                    <p className="text-lg font-semibold text-gray-800">
-                      {user.fullName || "No Name"}
-                    </p>
-                    <p className="text-sm text-gray-500">{user.email}</p>
-                  </div>
-                </div>
-                <p className="text-xs text-gray-400">ID: {user.id}</p>
+  {/* Search Bar */}
+  <div className="flex justify-center mb-10">
+    <input
+      type="text"
+      placeholder="Search by name or email..."
+      value={search}
+      onChange={(e) => setSearch(e.target.value)}
+      className="w-full sm:w-1/2 px-4 py-3 rounded-2xl
+      bg-black/40 backdrop-blur-xl
+      text-gray-100 placeholder-gray-400
+      border border-gray-700
+      focus:outline-none focus:ring-2 focus:ring-purple-500"
+    />
+  </div>
 
-                {/* Delete Button */}
-                <button
-                  onClick={() => deleteUser(user.id)}
-                  className="absolute top-4 right-4 bg-red-500 hover:bg-red-600 text-white text-xs px-3 py-1 rounded-lg"
-                >
-                  Delete
-                </button>
-              </div>
-            ))
-          ) : (
-            <p className="text-center text-gray-500 col-span-full mt-10">
-              No users found
-            </p>
-          )}
-        </div>
-      )}
+  {/* Loader */}
+  {loading ? (
+    <div className="flex justify-center items-center h-64">
+      <Loader />
     </div>
+  ) : (
+    <motion.div
+      layout
+      className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10"
+    >
+      {filteredUsers.length > 0 ? (
+        filteredUsers.map((user) => (
+          <motion.div
+            key={user.id}
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.3 }}
+            className="relative p-6
+            bg-white/5 backdrop-blur-2xl
+            border border-white/10
+            rounded-2xl shadow-xl
+            hover:shadow-purple-500/30 hover:border-purple-400
+            transition-all duration-300"
+          >
+            {/* User Card */}
+            <div className="flex items-center space-x-4 mb-4">
+              <img
+                src={user.imageUrl}
+                alt={user.fullName}
+                className="w-14 h-14 rounded-full border border-purple-400/40"
+              />
+              <div>
+                <p className="text-lg font-semibold text-gray-100">
+                  {user.fullName || "No Name"}
+                </p>
+                <p className="text-sm text-gray-400">{user.email}</p>
+              </div>
+            </div>
+
+            <p className="text-xs text-gray-500">User ID: {user.id}</p>
+
+            {/* Delete Button */}
+            <button
+              onClick={() => deleteUser(user.id)}
+              className="absolute top-4 right-4
+              bg-red-600/80 hover:bg-red-700
+              text-white text-xs px-3 py-1 rounded-lg shadow-md transition"
+            >
+              Delete
+            </button>
+          </motion.div>
+        ))
+      ) : (
+        <p className="text-center text-gray-400 col-span-full mt-10">
+          No users found.
+        </p>
+      )}
+    </motion.div>
+  )}
+</div>
+
   );
 }

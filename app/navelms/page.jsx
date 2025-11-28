@@ -20,65 +20,65 @@ import { useUser } from "@clerk/nextjs";
 const NavelmsPage = () => {
   const { user, isLoaded } = useUser();
 
-  // Default sections (visible to all users)
+  // Default sections
   const sections = [
     {
       title: "Home",
-      icon: <FaHome className="text-4xl text-orange-500" />,
+      icon: <FaHome className="text-4xl text-amber-400" />,
       description: "Explore the latest blogs and stories.",
       link: "/",
     },
     {
       title: "Write",
-      icon: <FaPenFancy className="text-4xl text-orange-500" />,
+      icon: <FaPenFancy className="text-4xl text-amber-400" />,
       description: "Feel free to write and share your thoughts.",
       link: "/write",
     },
     {
       title: "Read",
-      icon: <FaBook className="text-4xl text-orange-500" />,
+      icon: <FaBook className="text-4xl text-amber-400" />,
       description: "Enjoy reading community blogs and ideas.",
       link: "/ourwrittings",
     },
     {
       title: "Favourites",
-      icon: <FaStar className="text-4xl text-orange-500" />,
+      icon: <FaStar className="text-4xl text-amber-400" />,
       description: "View and manage your saved blogs.",
       link: "/favourites",
     },
     {
       title: "Imgs",
-      icon: <FaImage className="text-4xl text-orange-500" />,
+      icon: <FaImage className="text-4xl text-amber-400" />,
       description: "Find and use free images for your posts.",
       link: "/pixa-images",
     },
     {
       title: "About Us",
-      icon: <FaInfoCircle className="text-4xl text-orange-500" />,
+      icon: <FaInfoCircle className="text-4xl text-amber-400" />,
       description: "Learn more about SRBlogs’ mission and values.",
       link: "/about",
     },
     {
       title: "Contact Us",
-      icon: <FaEnvelope className="text-4xl text-orange-500" />,
+      icon: <FaEnvelope className="text-4xl text-amber-400" />,
       description: "Reach out to our team for any help or feedback.",
       link: "/contact",
     },
     {
       title: "Docs",
-      icon: <FaFileAlt className="text-4xl text-orange-500" />,
+      icon: <FaFileAlt className="text-4xl text-amber-400" />,
       description: "Access SRBlogs documentation and usage guide.",
       link: "/docs",
     },
     {
       title: "Privacy Policy",
-      icon: <FaShieldAlt className="text-4xl text-orange-500" />,
+      icon: <FaShieldAlt className="text-4xl text-amber-400" />,
       description: "Read how we protect your data and privacy.",
       link: "/privacy-policy",
     },
   ];
 
-  // ✅ Add dashboard links based on role
+  // Add dashboards based on role
   if (isLoaded) {
     const role = user?.publicMetadata?.role;
 
@@ -86,13 +86,13 @@ const NavelmsPage = () => {
       sections.push(
         {
           title: "Admin Dashboard",
-          icon: <FaTachometerAlt className="text-4xl text-orange-500" />,
+          icon: <FaTachometerAlt className="text-4xl text-amber-400" />,
           description: "Manage users, posts, and analytics.",
           link: "/admin",
         },
         {
           title: "Writer Dashboard",
-          icon: <FaPenFancy className="text-4xl text-orange-500" />,
+          icon: <FaPenFancy className="text-4xl text-amber-400" />,
           description: "Access and manage your blog posts.",
           link: "/writer/dashboard",
         }
@@ -100,7 +100,7 @@ const NavelmsPage = () => {
     } else if (role === "writer") {
       sections.push({
         title: "Writer Dashboard",
-        icon: <FaTachometerAlt className="text-4xl text-orange-500" />,
+        icon: <FaTachometerAlt className="text-4xl text-amber-400" />,
         description: "Access and manage your blog posts.",
         link: "/writer/dashboard",
       });
@@ -108,9 +108,10 @@ const NavelmsPage = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-orange-50 to-white py-20 px-5">
+    <div className="min-h-screen bg-gradient-to-b from-[#0b0b0d] via-[#121214] to-[#1a1a1f] py-20 px-5">
+      {/* Title */}
       <motion.h1
-        className="text-3xl sm:text-4xl font-bold text-center mb-12 text-orange-600"
+        className="text-3xl sm:text-4xl font-bold text-center mb-12 bg-gradient-to-r from-amber-400 to-amber-300 bg-clip-text text-transparent drop-shadow-lg"
         initial={{ opacity: 0, y: -30 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6 }}
@@ -118,6 +119,7 @@ const NavelmsPage = () => {
         Explore SRBlogs Features
       </motion.h1>
 
+      {/* Sections Grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
         {sections.map((section, index) => (
           <motion.div
@@ -132,20 +134,22 @@ const NavelmsPage = () => {
             }}
             whileHover={{
               scale: 1.05,
-              boxShadow: "0px 10px 20px rgba(0,0,0,0.1)",
+              boxShadow: "0px 15px 35px rgba(0,0,0,0.4)",
             }}
           >
             <Link
               href={section.link}
-              className="bg-white rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 p-6 text-center border border-orange-100 hover:border-orange-400 group block"
+              className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-300 p-6 text-center group block hover:bg-white/10"
             >
               <div className="flex justify-center mb-4 group-hover:scale-110 transition-transform">
                 {section.icon}
               </div>
-              <h2 className="text-xl font-semibold mb-2 text-gray-800 group-hover:text-orange-600">
+
+              <h2 className="text-xl font-semibold mb-2 text-gray-200 group-hover:text-amber-400">
                 {section.title}
               </h2>
-              <p className="text-gray-600 text-sm">{section.description}</p>
+
+              <p className="text-gray-400 text-sm">{section.description}</p>
             </Link>
           </motion.div>
         ))}

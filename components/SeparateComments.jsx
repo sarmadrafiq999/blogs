@@ -32,22 +32,28 @@ export default function SeparateComments({ blogId }) {
     <motion.div
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
-      className="mt-6 mb-6 p-4 border rounded-lg bg-white shadow"
+      className="mt-6 mb-6 p-4 border border-white/10 rounded-lg
+                 bg-white/10 backdrop-blur-xl shadow-xl"
     >
-      <h3 className="text-lg font-semibold mb-4">Comments</h3>
+      <h3 className="text-lg font-semibold mb-4 text-gray-200">
+        Comments
+      </h3>
 
       {loading ? (
-        <div className="flex justify-center items-center">
-          <Loader2 className="animate-spin" />
+        <div className="flex justify-center items-center py-4">
+          <Loader2 className="animate-spin text-amber-400" />
         </div>
       ) : comments.length === 0 ? (
-        <p className="text-gray-500">No comments yet.</p>
+        <p className="text-gray-400">No comments yet.</p>
       ) : (
         <ul className="space-y-4">
           {comments.map((comment, index) => (
-            <li key={index} className="border-b pb-2">
-              <p className="text-sm text-gray-700">{comment.text}</p>
-              <p className="text-xs text-gray-500 mt-1">
+            <li
+              key={index}
+              className="border-b border-white/10 pb-2"
+            >
+              <p className="text-sm text-gray-200">{comment.text}</p>
+              <p className="text-xs text-gray-400 mt-1">
                 By: {comment.userName || "Anonymous"} •{" "}
                 {new Date(comment.createdAt).toLocaleString()}
               </p>

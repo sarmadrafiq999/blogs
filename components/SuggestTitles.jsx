@@ -41,7 +41,7 @@ export default function SuggestTitles({ value, onChange, onTitleSelect }) {
 
   const handleClick = (title) => {
     skipFetchRef.current = true;
-    onChange(title); // update parent
+    onChange(title);
     setSuggestions([]);
     setLoadingSuggestions(false);
     if (onTitleSelect) onTitleSelect(title);
@@ -49,28 +49,31 @@ export default function SuggestTitles({ value, onChange, onTitleSelect }) {
 
   return (
     <div className="relative w-full max-w-2xl mx-auto px-2 sm:px-4">
+      {/* Input */}
       <input
         type="text"
         value={value}
         onChange={(e) => onChange(e.target.value)}
         placeholder="Enter your blog title..."
-        className="w-full border border-gray-300 shadow-sm focus:ring-2 focus:ring-amber-500 focus:outline-none p-3 rounded-lg text-base transition duration-200"
+        className="w-full border border-white/20 bg-white/5 shadow-sm focus:ring-2 focus:ring-amber-500 focus:outline-none p-3 rounded-lg text-gray-100 placeholder-gray-400 text-base transition duration-200"
       />
 
+      {/* Loading */}
       {loadingSuggestions && (
-        <div className="absolute top-full mt-2 left-0 right-0 bg-white p-3 rounded-lg text-sm text-gray-600 shadow-lg flex items-center gap-2 animate-fadeIn">
+        <div className="absolute top-full mt-2 left-0 right-0 bg-white/10 p-3 rounded-lg text-sm text-gray-200 shadow-lg flex items-center gap-2 animate-fadeIn">
           <div className="w-4 h-4 border-2 border-t-transparent border-amber-500 rounded-full animate-spin"></div>
           Loading suggestions...
         </div>
       )}
 
+      {/* Suggestions */}
       {suggestions.length > 0 && (
-        <ul className="absolute top-full mt-2 left-0 right-0 bg-white border border-gray-200 rounded-lg shadow-lg z-10 max-h-60 overflow-y-auto animate-slideDown">
+        <ul className="absolute top-full mt-2 left-0 right-0 bg-white/10 border border-white/20 rounded-lg shadow-lg z-10 max-h-60 overflow-y-auto animate-slideDown">
           {suggestions.map((s, idx) => (
             <li
               key={idx}
               onClick={() => handleClick(s)}
-              className="px-4 py-3 cursor-pointer hover:bg-blue-50 transition-colors duration-150"
+              className="px-4 py-3 cursor-pointer hover:bg-white/20 transition-colors duration-150 text-gray-100"
             >
               {s}
             </li>

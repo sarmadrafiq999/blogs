@@ -14,7 +14,6 @@ export default function AllBlogsList() {
   const [deletingId, setDeletingId] = useState(null);
   const router = useRouter();
 
-  // ✅ Fetch all blogs
   useEffect(() => {
     const fetchBlogs = async () => {
       try {
@@ -28,11 +27,9 @@ export default function AllBlogsList() {
         setLoading(false);
       }
     };
-
     fetchBlogs();
   }, []);
 
-  // ✅ Delete blog handler
   const handleDelete = async (blogId) => {
     if (!confirm("Are you sure you want to delete this blog?")) return;
 
@@ -45,7 +42,6 @@ export default function AllBlogsList() {
       if (!res.ok) throw new Error("Failed to delete blog");
 
       toast.success("Blog deleted successfully");
-      // Remove from UI
       setBlogs((prev) => prev.filter((blog) => blog._id !== blogId));
       router.push("/admin/all-blogs");
     } catch (error) {
@@ -57,7 +53,13 @@ export default function AllBlogsList() {
   };
 
   if (loading) return <Loader />;
-  if (!blogs.length) return <p className="p-6 text-lg">No blogs found.</p>;
+  if (!blogs.length)
+    return (
+      <p className="p-6 text-lg text-zinc-300 text-center">
+        No blogs found.
+      </p>
+    );
+
   return (
     <div className="space-y-12">
       {blogs.map((blog) => (
@@ -68,22 +70,26 @@ export default function AllBlogsList() {
           transition={{ duration: 0.4 }}
           className="relative group"
         >
-          <div className="flex flex-col sm:flex-row justify-between items-start gap-6 bg-white/70 backdrop-blur-md rounded-xl shadow-md p-6 transition hover:shadow-lg">
+          <div className="flex flex-col sm:flex-row justify-between items-start gap-6 bg-zinc-900/80 backdrop-blur-md border border-zinc-700 rounded-xl shadow-lg p-6 transition hover:shadow-xl hover:border-zinc-500">
+
+            {/* Left Content */}
             <div className="flex-1 space-y-2">
-              <div className="flex items-center text-sm text-gray-500">
+              <div className="flex items-center text-sm text-zinc-400">
                 <UserRound className="w-4 h-4 mr-1" />
                 {blog.authorName || "Admin"}
               </div>
-              <h2 className="text-2xl font-extrabold text-blue-700">
+
+              <h2 className="text-2xl font-extrabold text-white drop-shadow">
                 {blog.title}
               </h2>
-              <p className="text-gray-600 line-clamp-3 text-sm">
+
+              <p className="text-zinc-400 line-clamp-3 text-sm">
                 {blog.content.replace(/<[^>]+>/g, "").slice(0, 250)}...
               </p>
 
               <div className="flex items-center gap-4 mt-4">
                 <Link href={`/admin/user/${blog.authorId}/blog/${blog._id}`}>
-                  <button className="px-4 py-2 bg-blue-600 text-black rounded-lg hover:bg-blue-700 transition">
+                  <button className="px-4 py-2 bg-amber-500/80 text-black font-semibold rounded-lg hover:bg-amber-400 transition">
                     Read more →
                   </button>
                 </Link>
@@ -91,7 +97,7 @@ export default function AllBlogsList() {
                 <button
                   onClick={() => handleDelete(blog._id)}
                   disabled={deletingId === blog._id}
-                  className="flex items-center gap-2 px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition disabled:opacity-50"
+                  className="flex items-center gap-2 px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition disabled:opacity-40"
                 >
                   <Trash2 className="w-5 h-5" />
                   {deletingId === blog._id ? "Deleting..." : "Delete"}
@@ -99,23 +105,22 @@ export default function AllBlogsList() {
               </div>
             </div>
 
-            {/* ✅ Blog Image */}
+            {/* Right Image */}
             {blog.images?.length > 0 && (
               <img
                 src={blog.images[0]}
                 alt="Blog"
-                className="w-full sm:w-64 h-40 object-cover rounded-lg shadow-md"
+                className="w-full sm:w-64 h-40 object-cover rounded-lg shadow-md border border-zinc-700"
               />
             )}
-
-            {/* ✅ Delete Button */}
           </div>
 
+          {/* Bottom Color Bar */}
           <motion.div
             initial={{ scaleX: 0 }}
             animate={{ scaleX: 1 }}
             transition={{ duration: 0.5 }}
-            className="mt-6 h-1 bg-gradient-to-r from-orange-400 via-pink-500 to-purple-500 rounded-full origin-left"
+            className="mt-6 h-1 bg-gradient-to-r from-amber-500 via-pink-500 to-purple-600 rounded-full origin-left shadow-lg"
           />
         </motion.div>
       ))}

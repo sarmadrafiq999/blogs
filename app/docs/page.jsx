@@ -7,7 +7,7 @@ import { FaBook, FaCode, FaCogs, FaEdit, FaCircle } from "react-icons/fa";
 const docsSections = [
   {
     id: "getting-started",
-    icon: <FaBook className="text-4xl text-orange-500" />,
+    icon: <FaBook className="text-4xl text-amber-500" />,
     title: "Getting Started",
     desc: "Creating your first blog is simple and quick.",
     points: [
@@ -19,14 +19,14 @@ const docsSections = [
   },
   {
     id: "api-reference",
-    icon: <FaCode className="text-4xl text-orange-500" />,
+    icon: <FaCode className="text-4xl text-amber-500" />,
     title: "API Reference",
     desc: "Explore available API endpoints.",
     points: ["There are no endpoints currently. They will be added later."],
   },
   {
     id: "settings",
-    icon: <FaCogs className="text-4xl text-orange-500" />,
+    icon: <FaCogs className="text-4xl text-amber-500" />,
     title: "Settings",
     desc: "Manage your account easily.",
     points: [
@@ -36,7 +36,7 @@ const docsSections = [
   },
   {
     id: "editing",
-    icon: <FaEdit className="text-4xl text-orange-500" />,
+    icon: <FaEdit className="text-4xl text-amber-500" />,
     title: "Editing",
     desc: "Modify text and images effortlessly.",
     points: [
@@ -56,10 +56,10 @@ const DocsPage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-orange-50 to-white py-20 px-4">
+    <div className="min-h-screen bg-[#0b0b0d] text-gray-100 py-20 px-4">
       {/* Heading */}
       <motion.h1
-        className="text-5xl font-bold text-orange-600 text-center mb-12"
+        className="text-5xl font-bold text-amber-500 text-center mb-12"
         initial={{ opacity: 0, y: -40 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6 }}
@@ -76,12 +76,12 @@ const DocsPage = () => {
             initial={{ opacity: 0, y: 40 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ delay: idx * 0.2, duration: 0.6 }}
-            whileHover={{ scale: 1.05, boxShadow: "0px 10px 25px rgba(0,0,0,0.15)" }}
-            className="cursor-pointer bg-white/30 backdrop-blur-md rounded-2xl p-6 flex flex-col items-center text-center border border-orange-100 hover:border-orange-400 transition-all"
+            whileHover={{ scale: 1.05, boxShadow: "0px 10px 25px rgba(0,0,0,0.3)" }}
+            className="cursor-pointer bg-white/10 backdrop-blur-2xl rounded-2xl p-6 flex flex-col items-center text-center border border-white/20 hover:border-amber-500 transition-all"
           >
             <div className="mb-4">{doc.icon}</div>
-            <h2 className="text-xl font-semibold text-gray-800 mb-2">{doc.title}</h2>
-            <p className="text-gray-600 text-sm">{doc.desc}</p>
+            <h2 className="text-xl font-semibold text-gray-100 mb-2">{doc.title}</h2>
+            <p className="text-gray-300 text-sm">{doc.desc}</p>
           </motion.div>
         ))}
       </div>
@@ -96,11 +96,11 @@ const DocsPage = () => {
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2, duration: 0.6 }}
             viewport={{ once: true }}
-            className="bg-white/30 backdrop-blur-md rounded-2xl p-8"
+            className="bg-white/10 backdrop-blur-2xl border border-white/20 rounded-2xl p-8"
           >
             <div className="flex items-center gap-4 mb-6">
               {doc.icon}
-              <h2 className="text-3xl font-bold text-orange-600">{doc.title}</h2>
+              <h2 className="text-3xl font-bold text-amber-500">{doc.title}</h2>
             </div>
             <div className="flex flex-col gap-4">
               {doc.points.map((point, idx) => (
@@ -112,11 +112,11 @@ const DocsPage = () => {
                   viewport={{ once: true }}
                   className="flex items-start gap-3"
                 >
-                  <FaCircle className="mt-2 text-orange-500 text-xs flex-shrink-0" />
-                  <p className="text-gray-700 text-lg sm:text-xl leading-relaxed">
+                  <FaCircle className="mt-2 text-amber-500 text-xs flex-shrink-0" />
+                  <p className="text-gray-300 text-lg sm:text-xl leading-relaxed">
                     {point.split(" ").map((word, i) =>
                       ["blog", "image", "Clerk", "resize", "drag & drop"].includes(word) ? (
-                        <span key={i} className="text-orange-500 font-medium">{word} </span>
+                        <span key={i} className="text-amber-500 font-medium">{word} </span>
                       ) : (
                         word + " "
                       )

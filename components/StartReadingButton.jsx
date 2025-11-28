@@ -13,7 +13,7 @@ const StartReadingButton = () => {
   return (
     <button
       onClick={handleClick}
-      className="mt-10 ml-5 w-52 text-xl hover:bg-amber-500 animate-pulse bg-amber-400 h-16 rounded-full shadow-md transition"
+      className="mt-10 ml-5 w-52 text-xl hover:bg-amber-500 animate-pulse bg-amber-400 h-16 rounded-full shadow-md transition cursor-pointer"
     >
       Start Reading
     </button>

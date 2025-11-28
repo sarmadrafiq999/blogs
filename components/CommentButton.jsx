@@ -46,27 +46,40 @@ export default function CommentButton({ blogId }) {
       {/* Comment Button */}
       <button
         onClick={() => setShowBox((prev) => !prev)}
-        className="flex items-center gap-1 px-4 py-2 rounded-xl bg-amber-400 hover:bg-amber-300 transition"
+        className="flex items-center gap-1 px-4 py-2 rounded-xl
+                   bg-amber-500 hover:bg-amber-600 text-white transition"
       >
-        <MessageCircle className="w-5 h-5 stroke-white" />
-        <span className="font-mediumn text-white">Comment</span>
+        <MessageCircle className="w-5 h-5" />
+        <span className="font-medium">Comment</span>
       </button>
 
-      {/* Chat-style Comment Box */}
+      {/* Dark Glassmorphism Comment Box */}
       {showBox && (
-        <div className="absolute bottom-12 right-0 w-64 bg-white shadow-lg rounded-xl p-3 border border-gray-200 z-50">
+        <div
+          className="absolute bottom-12 right-0 w-64
+                     bg-white/10 backdrop-blur-xl
+                     border border-white/10 shadow-2xl
+                     rounded-xl p-3 z-50"
+        >
           <textarea
             value={comment}
             onChange={(e) => setComment(e.target.value)}
             placeholder="Write a comment..."
-            className="w-full p-2 text-sm border rounded-md resize-none focus:outline-none focus:ring-2 focus:ring-amber-400"
+            className="w-full p-2 text-sm rounded-md resize-none
+                       text-gray-200 placeholder-gray-400
+                       bg-black/30 border border-white/10
+                       focus:outline-none focus:ring-2 focus:ring-amber-500"
             rows={3}
           />
+
           <div className="flex justify-end mt-2">
             <button
               onClick={handlePost}
               disabled={posting}
-              className="flex items-center gap-1 px-3 py-1 bg-amber-500 hover:bg-amber-600 text-white text-sm rounded-md transition disabled:opacity-60 disabled:cursor-not-allowed"
+              className="flex items-center gap-1 px-3 py-1
+                         bg-amber-500 hover:bg-amber-600
+                         text-white text-sm rounded-md transition
+                         disabled:opacity-60 disabled:cursor-not-allowed"
             >
               {posting ? (
                 <Loader2 className="w-4 h-4 animate-spin" />

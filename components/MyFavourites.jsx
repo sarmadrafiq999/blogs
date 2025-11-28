@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { useUser } from "@clerk/nextjs";
-import { useRouter } from "next/navigation";   // ✅ import router
+import { useRouter } from "next/navigation";
 import { Loader2, Star, Trash2 } from "lucide-react";
 import { toast } from "react-toastify";
 import { motion, AnimatePresence } from "framer-motion";
@@ -18,7 +18,7 @@ export default function MyFavourites() {
   const [loadingBlogs, setLoadingBlogs] = useState(false);
   const [selectedWriterName, setSelectedWriterName] = useState("");
 
-  // ✅ Redirect if not signed in
+  // Redirect if not signed in
   useEffect(() => {
     if (isLoaded && !isSignedIn) {
       router.push("/sign-in");
@@ -46,10 +46,6 @@ export default function MyFavourites() {
     fetchFavourites();
   }, [isSignedIn]);
 
-  // … ✅ rest of your code stays the same …
-
-
-
   // Remove Favourite
   const handleRemoveFavourite = async (e, writerId) => {
     e.stopPropagation();
@@ -64,7 +60,7 @@ export default function MyFavourites() {
       } else {
         toast.error("❌ Failed to remove favourite");
       }
-    } catch (error) {
+    } catch {
       toast.error("⚠️ Something went wrong");
     }
   };
@@ -85,7 +81,7 @@ export default function MyFavourites() {
       } else {
         toast.error("⚠️ Could not load blogs");
       }
-    } catch (err) {
+    } catch {
       toast.error("⚠️ Error fetching blogs");
     } finally {
       setLoadingBlogs(false);
@@ -94,7 +90,7 @@ export default function MyFavourites() {
 
   if (!isSignedIn) {
     return (
-      <p className="text-center text-gray-500 mt-20 py-10">
+      <p className="text-center text-gray-300 mt-20 py-10">
         Please sign in to see your favourite writers.
       </p>
     );
@@ -103,19 +99,19 @@ export default function MyFavourites() {
   if (loading) {
     return (
       <div className="flex justify-center items-center py-10 mt-20">
-      <Loader/>
+        <Loader />
       </div>
     );
   }
 
   return (
-    <div className="max-w-4xl mx-auto py-6 px-3 sm:px-6 mt-12">
-      <h2 className="text-xl sm:text-2xl md:text-3xl font-bold mb-4 flex items-center gap-2">
+ <div className="min-h-screen bg-[#0b0b0f] text-white">
+      <div className="max-w-4xl mx-auto py-6 px-3 sm:px-6 mt-12">      <h2 className="text-xl sm:text-2xl md:text-3xl font-bold mb-4 flex items-center gap-2 text-amber-400">
         <Star className="w-6 h-6 text-amber-500" /> My Favourite Writers
       </h2>
 
       {favourites.length === 0 ? (
-        <p className="text-gray-500 text-base sm:text-lg">
+        <p className="text-gray-400 text-base sm:text-lg">
           You haven’t added any favourite writers yet.
         </p>
       ) : (
@@ -128,36 +124,37 @@ export default function MyFavourites() {
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, scale: 0.8 }}
                 transition={{ duration: 0.3 }}
-                className="p-3 sm:p-4 bg-white rounded-lg shadow hover:shadow-md transition cursor-pointer"
-                onClick={() =>
-                  fetchWriterBlogs(fav.writerId, fav.writerName)
-                }
+                className="
+                  p-4 rounded-xl shadow-md transition cursor-pointer
+                  bg-[#111]/60 backdrop-blur-xl border border-white/10
+                  hover:bg-[#222]/60 hover:shadow-lg
+                "
+                onClick={() => fetchWriterBlogs(fav.writerId, fav.writerName)}
               >
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-3">
                     <img
-                      src={fav.writerImage || "/default.png"}
+                      src={fav.writerImage || '/default.png'}
                       alt={fav.writerName}
-                      className="w-10 h-10 sm:w-12 sm:h-12 rounded-full border border-gray-200"
+                      className="w-12 h-12 rounded-full border border-white/20"
                     />
                     <div>
-                      <p className="font-semibold text-sm sm:text-base text-gray-800">
+                      <p className="font-semibold text-gray-100">
                         {fav.writerName}
                       </p>
-                      <p className="text-xs sm:text-sm text-gray-500">
+                      <p className="text-sm text-gray-400">
                         {fav.writerEmail}
                       </p>
                     </div>
                   </div>
 
-                  {/* Delete button */}
                   <motion.button
                     whileHover={{ scale: 1.1, rotate: -10 }}
                     whileTap={{ scale: 0.9 }}
-                    className="ml-2 p-1 sm:p-2 rounded-full hover:bg-red-100 text-red-500"
+                    className="ml-2 p-2 rounded-full hover:bg-red-900/30 text-red-400"
                     onClick={(e) => handleRemoveFavourite(e, fav.writerId)}
                   >
-                    <Trash2 className="w-4 h-4 sm:w-5 sm:h-5" />
+                    <Trash2 className="w-5 h-5" />
                   </motion.button>
                 </div>
               </motion.li>
@@ -166,40 +163,42 @@ export default function MyFavourites() {
         </ul>
       )}
 
-      {/* Display blogs for selected writer */}
+      {/* Blogs Section */}
       {selectedWriterName && (
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
-          className="mt-6 sm:mt-8"
+          className="mt-8"
         >
-          <h3 className="text-lg sm:text-xl md:text-2xl font-bold mb-3">
+          <h3 className="text-xl md:text-2xl font-bold mb-3 text-amber-400">
             Blogs by {selectedWriterName}
           </h3>
 
           {loadingBlogs ? (
             <div className="flex justify-center py-6">
-              <Loader/>
+              <Loader />
             </div>
           ) : selectedWriterBlogs.length === 0 ? (
-            <p className="text-gray-500 text-sm sm:text-base">
-              No blogs found for this writer.
-            </p>
+            <p className="text-gray-400">No blogs found for this writer.</p>
           ) : (
-            <ul className="space-y-3 sm:space-y-4">
+            <ul className="space-y-4">
               {selectedWriterBlogs.map((blog) => (
                 <motion.li
                   key={blog._id}
                   initial={{ opacity: 0, x: -20 }}
                   animate={{ opacity: 1, x: 0 }}
-                  className="p-3 sm:p-4 bg-white rounded-lg shadow hover:shadow-md transition cursor-pointer"
+                  className="
+                    p-4 rounded-xl shadow-md transition cursor-pointer
+                    bg-[#111]/60 backdrop-blur-xl border border-white/10
+                    hover:bg-[#222]/60 hover:shadow-lg
+                  "
                 >
                   <Link href={`/bloglist/${blog._id}`}>
                     <div>
-                      <p className="font-semibold text-base sm:text-lg">
+                      <p className="font-semibold text-gray-100 text-lg">
                         {blog.title}
                       </p>
-                      <p className="text-xs sm:text-sm text-gray-500">
+                      <p className="text-sm text-gray-400">
                         {new Date(blog.createdAt).toLocaleDateString()}
                       </p>
                     </div>
@@ -210,6 +209,7 @@ export default function MyFavourites() {
           )}
         </motion.div>
       )}
+    </div>
     </div>
   );
 }

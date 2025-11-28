@@ -45,7 +45,7 @@
 
 :root {
   --radius: 0.625rem;
-  --background: oklch(1 0 0);
+--background: oklch(0 0 0) !important;
   --foreground: oklch(0.145 0 0);
   --card: oklch(1 0 0);
   --card-foreground: oklch(0.145 0 0);
@@ -238,3 +238,32 @@
   display: table;
   clear: both;
 }
+
+/* Optionally add to globals.css (Tailwind's @apply will be used) */
+
+.editor-btn {
+  @apply flex items-center justify-center p-2 rounded-lg bg-gray-100 hover:bg-gray-200 shadow-sm transition-all duration-150 border border-gray-200/60 min-w-[40px];
+}
+
+.editor-select {
+  @apply text-sm border border-gray-300 bg-white px-2 py-1 rounded-md shadow-sm hover:bg-gray-50 transition;
+}
+
+.editor-color {
+  @apply flex items-center gap-2 p-1 rounded-md bg-gray-100 hover:bg-gray-200 transition-all duration-150 border border-gray-200/60 cursor-pointer;
+}
+
+.color-input {
+  @apply w-6 h-6 cursor-pointer rounded;
+}
+
+/* small helper to hide scrollbar on overflow-x in the toolbars */
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.hide-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+

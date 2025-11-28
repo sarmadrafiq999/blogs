@@ -13,7 +13,7 @@ export default async function WritePage() {
 
   return(
     <div className="">
-    
+
        <WriteHere />
     </div>
   )

@@ -6,11 +6,8 @@ import AdminNavbar from "../../components/AdminNavbar";
 
 export default function Layout({ children }) {
   return (
-    <div className="min-h-screen bg-gray-50">
-      {/* Admin Navbar */}
+    <div className="min-h-screen bg-black">
       <AdminNavbar />
-
-      {/* Page content */}
       <main className="pt-24 px-6">{children}</main>
     </div>
   );

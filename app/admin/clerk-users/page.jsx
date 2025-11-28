@@ -22,7 +22,7 @@ export default function ClerkUsersPage() {
   if (user?.publicMetadata?.role !== "admin") return null;
 
   return (
-    <div className="p-6 bg-gradient-to-b to-blue-50 min-h-screen">
+    <div>
       <ClerkUsersList />
     </div>
   );

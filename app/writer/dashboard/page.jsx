@@ -1,4 +1,3 @@
-// app/writer/dashboard/page.js
 "use client";
 
 import { useUser } from "@clerk/nextjs";
@@ -9,11 +8,10 @@ import { motion } from "framer-motion";
 
 const WriterDashboard = () => {
   const { isLoaded, isSignedIn, user } = useUser();
-  const [blogs, setBlogs] = useState([]); // null prevents empty-state flicker
+  const [blogs, setBlogs] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  // Fetch blogs only if user is signed in
   useEffect(() => {
     if (!isSignedIn || !user) return;
 
@@ -35,29 +33,29 @@ const WriterDashboard = () => {
     fetchWriterBlogs();
   }, [user, isSignedIn]);
 
-  // Show loader only while Clerk is loading
-  if (!isLoaded) {
+  // Loading spinner
+  if (!isLoaded || loading) {
     return (
-      <div className="min-h-screen flex flex-col items-center justify-center">
+      <div className="min-h-screen flex flex-col items-center justify-center bg-[#0b0b0f] text-white">
         <motion.div
           animate={{ rotate: 360 }}
           transition={{ repeat: Infinity, duration: 1, ease: "linear" }}
-          className="w-12 h-12 border-4 border-blue-500 border-t-transparent rounded-full"
+          className="w-12 h-12 border-4 border-amber-500 border-t-transparent rounded-full"
         />
-        <p className="mt-4 text-gray-600 text-lg">Loading your dashboard...</p>
+        <p className="mt-4 text-gray-400 text-lg">
+          {loading ? "Loading your blogs..." : "Loading your dashboard..."}
+        </p>
       </div>
     );
   }
 
-  // User not signed in
+  // Not signed in
   if (!isSignedIn) {
     return (
-      <div className="min-h-screen flex items-center justify-center ">
+      <div className="min-h-screen flex items-center justify-center bg-[#0b0b0f] text-white">
         <div className="text-center">
-          <h2 className="text-2xl font-bold mb-4">
-            Please sign in to access writer dashboard
-          </h2>
-          <Link href="/sign-in" className="text-blue-600 hover:underline">
+          <h2 className="text-2xl font-bold mb-4">Please sign in to access dashboard</h2>
+          <Link href="/sign-in" className="text-amber-400 hover:underline">
             Go to Sign In
           </Link>
         </div>
@@ -65,30 +63,16 @@ const WriterDashboard = () => {
     );
   }
 
-  // Blogs loading
-  if (loading) {
-    return (
-      <div className="min-h-screen flex flex-col items-center justify-center">
-        <motion.div
-          animate={{ rotate: 360 }}
-          transition={{ repeat: Infinity, duration: 1, ease: "linear" }}
-          className="w-12 h-12 border-4 border-blue-500 border-t-transparent rounded-full"
-        />
-        <p className="mt-4 text-gray-600 text-lg">Loading your blogs...</p>
-      </div>
-    );
-  }
-
   // Error fetching blogs
   if (error) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
+      <div className="min-h-screen flex items-center justify-center bg-[#0b0b0f] text-white">
         <div className="text-center text-red-500">
           <h2 className="text-2xl font-bold mb-4">Error</h2>
           <p>{error}</p>
           <Link
             href="/"
-            className="text-blue-600 hover:underline mt-4 inline-block"
+            className="text-amber-400 hover:underline mt-4 inline-block"
           >
             Return Home
           </Link>
@@ -98,15 +82,14 @@ const WriterDashboard = () => {
   }
 
   return (
-    <div className="min-h-screen p-6 mt-20 bg-gray-50">
+    <div className="min-h-screen p-6 mt-15 bg-[#0b0b0f] text-white">
       <div className="max-w-6xl mx-auto">
         <div className="flex justify-between items-center mb-8">
           <Link
             href="/"
-            className="flex items-center text-blue-600 hover:underline"
+            className="flex items-center text-amber-400 hover:underline"
           >
-          <div className="">🏠</div>
-            <ArrowLeft className="w-5 h-5 mr-1 " />
+            <ArrowLeft className="w-5 h-5 mr-1" /> Home
           </Link>
           <h1 className="text-3xl font-bold">My Uploads</h1>
           <div className="w-24"></div>
@@ -116,11 +99,11 @@ const WriterDashboard = () => {
           {blogs.map((blog) => (
             <div
               key={blog._id}
-              className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow"
+              className="bg-[#111] rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow border border-white/10"
             >
               <div className="p-4">
-                <h2 className="text-xl font-bold mb-2">{blog.title}</h2>
-                <p className="text-gray-600 text-sm mb-4 line-clamp-3">
+                <h2 className="text-xl font-bold mb-2 text-amber-400">{blog.title}</h2>
+                <p className="text-gray-300 text-sm mb-4 line-clamp-3">
                   {blog.content.replace(/<[^>]+>/g, "").slice(0, 150)}...
                 </p>
                 <div className="flex justify-between items-center">
@@ -130,26 +113,22 @@ const WriterDashboard = () => {
                   <div className="flex space-x-2">
                     <Link
                       href={`/bloglist/${blog._id}/edit`}
-                      className="p-2 text-blue-600 hover:bg-blue-50 rounded-full"
+                      className="p-2 text-amber-400 hover:bg-amber-900/20 rounded-full"
                     >
                       <Edit className="w-5 h-5" />
                     </Link>
                     <button
                       onClick={async () => {
-                        if (!confirm("Are you sure you want to delete this blog?"))
-                          return;
+                        if (!confirm("Are you sure you want to delete this blog?")) return;
                         try {
-                          const response = await fetch(
-                            `/api/bloglist/${blog._id}`,
-                            { method: "DELETE" }
-                          );
+                          const response = await fetch(`/api/bloglist/${blog._id}`, { method: "DELETE" });
                           if (!response.ok) throw new Error("Failed to delete blog");
                           setBlogs(blogs.filter((b) => b._id !== blog._id));
                         } catch (err) {
                           setError(err.message);
                         }
                       }}
-                      className="p-2 text-red-600 hover:bg-red-50 rounded-full"
+                      className="p-2 text-red-500 hover:bg-red-900/20 rounded-full"
                     >
                       <Trash2 className="w-5 h-5" />
                     </button>
@@ -160,15 +139,15 @@ const WriterDashboard = () => {
           ))}
         </div>
 
-        {/* Empty state only after fetch */}
+        {/* Empty state */}
         {blogs.length === 0 && (
           <div className="text-center py-12">
-            <p className="text-lg text-gray-600 mb-4">
+            <p className="text-lg text-gray-400 mb-4">
               You haven't written any blogs yet.
             </p>
             <Link
               href="/write"
-              className="inline-block bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition"
+              className="inline-block bg-amber-500 text-white px-6 py-2 rounded-lg hover:bg-amber-600 transition"
             >
               Create Your First Blog
             </Link>

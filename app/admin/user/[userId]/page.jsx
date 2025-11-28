@@ -22,11 +22,12 @@ export default function UserBlogsPage() {
   if (user?.publicMetadata?.role !== "admin") return null;
 
   return (
-    <div className="p-6 mt-20 bg-gradient-to-b to-blue-50 min-h-screen">
-      <h1 className="flex items-center justify-center text-3xl font-bold mb-8">
-        Blogs by User
-      </h1>
-      <UserBlogsList userId={userId} />
+    <div className="min-h-screen w-full bg-black bg-gradient-to-b from-black via-gray-900 to-black text-gray-100 flex flex-col items-center justify-start">
+      {/* Optional: add some padding/margin for content */}
+      <div className="w-full p-6 mt-20 mb-4">
+        <h1 className="text-3xl font-bold text-center mb-8">Blogs by User</h1>
+        <UserBlogsList userId={userId} />
+      </div>
     </div>
   );
 }

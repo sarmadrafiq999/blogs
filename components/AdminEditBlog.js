@@ -113,41 +113,43 @@ export default function AdminEditBlog() {
         );
 
     return (
-        <div className="p-6 mt-0 min-h-screen bg-gradient-to-b from-gray-50 to-white">
+        <div className="p-6 min-h-screen bg-black bg-gradient-to-b from-black via-gray-900 to-black text-gray-100">
             <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.4 }}
-                className="max-w-3xl mx-auto "
+                className="max-w-4xl mx-auto bg-gray-900/60 backdrop-blur-xl border border-gray-700 rounded-xl p-8 shadow-lg"
             >
-                <h1 className="text-2xl font-bold text-blue-700">Edit Blog</h1>
+                <h1 className="text-3xl font-extrabold text-orange-400 mb-6">
+                    Edit Blog
+                </h1>
 
                 {/* Title */}
-                <div>
-                    <label className="block font-medium mb-1">Title</label>
+                <div className="mb-6">
+                    <label className="block font-semibold mb-1 text-gray-300">Title</label>
                     <input
                         type="text"
-                        className="w-full border p-2 rounded"
+                        className="w-full bg-gray-800 border border-gray-700 text-gray-100 p-3 rounded-lg focus:outline-none focus:border-purple-500"
                         value={title}
                         onChange={(e) => setTitle(e.target.value)}
                     />
                 </div>
 
                 {/* Content */}
-                <div>
-                    <label className="block font-medium mb-1">Content</label>
+                <div className="mb-6">
+                    <label className="block font-semibold mb-1 text-gray-300">Content</label>
                     <div
                         contentEditable
                         suppressContentEditableWarning
-                        className="w-full min-h-[200px] p-3 border rounded-lg"
+                        className="w-full min-h-[250px] bg-gray-800 border border-gray-700 text-gray-100 p-4 rounded-lg focus:outline-none"
                         onInput={(e) => setContent(e.currentTarget.innerHTML)}
                         dangerouslySetInnerHTML={{ __html: content }}
                     />
                 </div>
 
                 {/* Images */}
-                <div>
-                    <label className="block font-medium mb-2">Images</label>
+                <div className="mb-6">
+                    <label className="block font-semibold mb-2 text-gray-300">Images</label>
                     <div className="flex flex-wrap gap-4 mb-3">
                         {images.map((img, i) => (
                             <div
@@ -157,12 +159,12 @@ export default function AdminEditBlog() {
                                 <img
                                     src={img}
                                     alt={`blog-img-${i}`}
-                                    className="w-32 h-32 object-cover rounded border"
+                                    className="w-32 h-32 object-cover rounded border border-gray-700"
                                 />
                                 <button
                                     type="button"
                                     onClick={() => handleRemoveImage(i)}
-                                    className="absolute top-1 right-1 bg-red-500 text-white text-xs px-2 py-1 rounded"
+                                    className="absolute top-1 right-1 bg-red-600 text-white text-xs px-2 py-1 rounded"
                                 >
                                     X
                                 </button>
@@ -179,20 +181,33 @@ export default function AdminEditBlog() {
 
                                 <label
                                     htmlFor={`replace-${i}`}
-                                    className="mt-2 cursor-pointer bg-blue-500 text-white text-xs px-2 py-1 rounded hover:bg-blue-600"
+                                    className="mt-2 cursor-pointer bg-purple-600 text-white text-xs px-3 py-1 rounded-lg hover:bg-purple-700 transition"
                                 >
                                     Replace
                                 </label>
                             </div>
                         ))}
                     </div>
+
+                    {/* Add New Images */}
+                    <input
+                        type="file"
+                        accept="image/*"
+                        multiple
+                        onChange={handleImageAdd}
+                        className="text-gray-300"
+                    />
                 </div>
 
                 {/* Save Button */}
                 <button
                     onClick={handleSave}
                     disabled={saving}
-                    className="w-30 bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 disabled:opacity-50"
+                    className="
+                        w-full mt-4 bg-gradient-to-r from-orange-500 to-purple-600
+                        text-white py-3 rounded-xl font-bold
+                        hover:opacity-90 disabled:opacity-50 transition
+                    "
                 >
                     {saving ? "Saving..." : "Save Changes"}
                 </button>

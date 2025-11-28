@@ -33,7 +33,7 @@ export async function GET(req, { params }) {
     }
 
     await dbConnect();
-    const { userId } = params;
+    const { userId } =await params;
 
     if (!userId) {
       return NextResponse.json(

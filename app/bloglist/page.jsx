@@ -10,16 +10,14 @@ import LikeButton from "../../components/LikeButton";
 import DisLikeButton from "../../components/Dislike";
 import CommentButton from "../../components/CommentButton";
 import CategoryScroller from "../../components/CategoryScroller";
-import { useUser, RedirectToSignIn } from "@clerk/nextjs"; // ✅ Clerk
+import { useUser, RedirectToSignIn } from "@clerk/nextjs";
 
 const BlogList = () => {
-  const { isLoaded, isSignedIn } = useUser(); // ✅ auth state
+  const { isLoaded, isSignedIn } = useUser();
   const { blogData, loading } = useAppContext();
   const [selectedCategory, setSelectedCategory] = useState(null);
 
-  const handleCategorySelect = (categoryName) => {
-    setSelectedCategory(categoryName);
-  };
+  const handleCategorySelect = (categoryName) => setSelectedCategory(categoryName);
 
   const filteredBlogs = useMemo(() => {
     if (!blogData) return [];
@@ -29,26 +27,19 @@ const BlogList = () => {
     );
   }, [blogData, selectedCategory]);
 
-  // ✅ Wait until Clerk finishes loading
-  if (!isLoaded) return <p className="p-6 text-lg">Checking authentication...</p>;
-
-  // ✅ Block unauthenticated users
+  if (!isLoaded) return <p className="p-6 text-lg text-gray-300">Checking authentication...</p>;
   if (!isSignedIn) return <RedirectToSignIn />;
-
-  if (loading) return <p className="p-6 text-lg">Loading blogs...</p>;
-  if (!filteredBlogs.length)
-    return <p className="p-6 text-lg">No blogs found.</p>;
+  if (loading) return <p className="p-6 text-lg text-gray-300">Loading blogs...</p>;
+  if (!filteredBlogs.length) return <p className="p-6 text-lg text-gray-300">No blogs found.</p>;
 
   return (
-    <div className="p-6 space-y-12 bg-gradient-to-b mt-20 to-blue-50 min-h-screen">
+    <div className="p-6 space-y-12 bg-gradient-to-b from-[#0b0b0d] via-[#121214] to-[#1a1a1f] min-h-screen mt-20">
       <CategoryScroller onSelect={handleCategorySelect} />
 
       {selectedCategory && (
-        <p className="text-lg text-gray-600">
+        <p className="text-gray-300 text-lg">
           Showing blogs in:{" "}
-          <span className="font-semibold text-blue-600">
-            {selectedCategory}
-          </span>
+          <span className="font-semibold text-amber-500">{selectedCategory}</span>
         </p>
       )}
 
@@ -61,21 +52,21 @@ const BlogList = () => {
             key={blog._id}
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.4 }}
+            transition={{ duration: 0.5 }}
             className="relative group"
           >
-            <div className="flex flex-col sm:flex-row justify-between items-start gap-6 bg-white/70 backdrop-blur-md rounded-xl shadow-md p-6 transition hover:shadow-lg">
+            <div className="flex flex-col sm:flex-row justify-between items-start gap-6 bg-white/10 backdrop-blur-2xl border border-white/20 rounded-2xl shadow-xl p-6 hover:shadow-2xl transition-all">
               <div className="flex-1 space-y-2">
-                <div className="flex items-center text-sm text-gray-500">
+                <div className="flex items-center text-sm text-gray-400">
                   <UserRound className="w-4 h-4 mr-1" />
                   {blog.authorName || "Admin"}
                 </div>
-                <h2 className="text-2xl font-extrabold text-blue-700">
+
+                <h2 className="text-2xl font-extrabold text-amber-400 group-hover:text-amber-500 transition-colors">
                   {blog.title || "Untitled Blog"}
                 </h2>
-                <p className="text-gray-600 line-clamp-3 text-sm">
-                  {preview}...
-                </p>
+
+                <p className="text-gray-300 line-clamp-3 text-sm">{preview}...</p>
 
                 <div className="flex gap-3 pt-3">
                   <LikeButton blogId={blog._id} />
@@ -84,7 +75,7 @@ const BlogList = () => {
                 </div>
 
                 <Link href={`/bloglist/${blog._id}`}>
-                  <button className="text-blue-600 font-medium hover:underline mt-2">
+                  <button className="text-amber-500 font-medium hover:underline mt-2">
                     Read more →
                   </button>
                 </Link>
@@ -94,7 +85,7 @@ const BlogList = () => {
                 <img
                   src={blog.images[0]}
                   alt={blog.title || "Blog Image"}
-                  className="w-full sm:w-64 h-40 object-cover rounded-lg shadow-md"
+                  className="w-full sm:w-64 h-40 object-cover rounded-xl shadow-md"
                   loading="lazy"
                 />
               )}
@@ -103,8 +94,8 @@ const BlogList = () => {
             <motion.div
               initial={{ scaleX: 0 }}
               animate={{ scaleX: 1 }}
-              transition={{ duration: 0.5 }}
-              className="mt-6 h-1 bg-gradient-to-r from-orange-400 via-pink-500 to-purple-500 rounded-full origin-left"
+              transition={{ duration: 0.6 }}
+              className="mt-6 h-1 bg-gradient-to-r from-amber-500 via-pink-500 to-purple-500 rounded-full origin-left"
             />
           </motion.div>
         );

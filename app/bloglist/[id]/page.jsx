@@ -7,7 +7,6 @@ import Navbar from "../../../components/Navbar";
 import { useUser } from "@clerk/nextjs";
 import { Copy, Facebook, Twitter, Clock, X, Pencil } from "lucide-react";
 import { motion } from "framer-motion";
-// import LikeButton from "../../../components/LikeButton";
 import DisLikeButton from "../../../components/Dislike";
 import LikeButton from "../../../components/LikeButton";
 import DownloadIcon from "../../../components/DownloadIcon";
@@ -86,20 +85,25 @@ export default function BlogDetailPage() {
   }
 
   return (
-    <>
+    <div className="bg-gradient-to-b from-[#0b0b0d] via-[#121214] to-[#1a1a1f] min-h-screen">
       <Navbar />
-{/* 🔝 Top Action Bar */}
-<div className="fixed top-20 left-0 right-0 flex flex-wrap justify-between px-4 md:px-8 z-40 gap-2">
+{/* 🔝 Top Action Bar — not floating */}
+<div className="mt-15 flex flex-wrap justify-between px-4 md:px-8 gap-2 backdrop-blur-lg bg-[#111115]/50 rounded-xl shadow-lg p-2">
   {/* Copy + Download */}
   <div className="flex gap-2">
     <button
       onClick={handleCopy}
-      className="bg-amber-500 hover:bg-amber-400 text-white px-3 py-2 rounded-lg flex items-center gap-2 shadow transition"
+      className="bg-[#1a1a1f]/60 hover:bg-amber-600/30 text-amber-400 hover:text-white px-3 py-2 rounded-lg flex items-center gap-2 shadow transition backdrop-blur-md"
     >
       <Copy className="w-4 h-4" />
       <span className="hidden sm:inline">Copy</span>
     </button>
-    <DownloadIcon editorRef={contentRef} title={blog.title} />
+
+    <DownloadIcon
+      editorRef={contentRef}
+      title={blog.title}
+      className="bg-[#1a1a1f]/60 hover:bg-amber-600/30 text-amber-400 hover:text-white px-3 py-2 rounded-lg shadow transition backdrop-blur-md"
+    />
   </div>
 
   {/* Social Share */}
@@ -108,7 +112,7 @@ export default function BlogDetailPage() {
       href={`https://twitter.com/intent/tweet?url=${window.location.href}`}
       target="_blank"
       rel="noopener noreferrer"
-      className="bg-amber-500 text-white px-3 py-2 rounded-lg hover:bg-amber-600 flex items-center gap-2 shadow transition"
+      className="bg-[#1a1a1f]/60 hover:bg-blue-500/30 text-blue-400 hover:text-white px-3 py-2 rounded-lg flex items-center gap-2 shadow transition backdrop-blur-md"
     >
       <Twitter className="w-4 h-4" />
       <span className="hidden sm:inline">Tweet</span>
@@ -117,7 +121,7 @@ export default function BlogDetailPage() {
       href={`https://www.facebook.com/sharer/sharer.php?u=${window.location.href}`}
       target="_blank"
       rel="noopener noreferrer"
-      className="bg-amber-600 text-white px-3 py-2 rounded-lg hover:bg-amber-700 flex items-center gap-2 shadow transition"
+      className="bg-[#1a1a1f]/60 hover:bg-blue-700/30 text-blue-400 hover:text-white px-3 py-2 rounded-lg flex items-center gap-2 shadow transition backdrop-blur-md"
     >
       <Facebook className="w-4 h-4" />
       <span className="hidden sm:inline">Share</span>
@@ -125,22 +129,27 @@ export default function BlogDetailPage() {
   </div>
 </div>
 
+{/* 🔑 Main Layout — adjusted with top margin to accommodate action bar */}
+<div className="max-w-7xl mx-auto mt-6 px-4 md:px-8 lg:px-12 grid grid-cols-1 md:grid-cols-[1fr_250px] gap-8">
+  {/* Blog content and author sidebar here */}
+</div>
+
 
       {/* 🔑 Main Layout */}
-      <div className="max-w-7xl mx-auto mt-36 px-4 md:px-8 lg:px-12 grid grid-cols-1 md:grid-cols-[1fr_250px] gap-8">
+      <div className="max-w-7xl mx-auto mt-15 px-4 md:px-8 lg:px-12 grid grid-cols-1 md:grid-cols-[1fr_250px] gap-8">
         {/* Blog Content */}
         <div className="flex flex-col gap-6">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
-            className="relative bg-white/90 backdrop-blur-md rounded-3xl shadow-xl p-6"
+            className="relative bg-white/10 backdrop-blur-2xl rounded-3xl shadow-2xl p-6"
           >
             {/* ✏️ Edit Button */}
             {user && blog.authorId === user.id && (
               <button
                 onClick={() => router.push(`/bloglist/${blog._id}/edit`)}
-                className="absolute top-4  z-50 right-4 p-2 rounded-full bg-amber-600 hover:bg-amber-700 text-white shadow-md transition"
+                className="absolute top-4 right-4 p-2 rounded-full bg-amber-600 hover:bg-amber-700 text-white shadow-md transition"
                 title="Edit Blog"
               >
                 <Pencil className="w-5 h-5" />
@@ -171,20 +180,20 @@ export default function BlogDetailPage() {
                     key={i}
                     src={src}
                     alt={`blog-img-${i}`}
-                    className="w-full h-[220px] object-cover rounded-xl shadow-md"
-                    whileHover={{ scale: 1.02 }}
+                    className="w-full h-[220px] object-cover rounded-xl shadow-lg"
+                    whileHover={{ scale: 1.03 }}
                   />
                 ))}
               </motion.div>
             )}
 
             {/* Title */}
-            <h1 className="text-3xl sm:text-4xl font-extrabold bg-gradient-to-r from-amber-700 to-amber-500 text-transparent bg-clip-text mb-4">
+            <h1 className="text-3xl sm:text-4xl font-extrabold bg-gradient-to-r from-amber-500 to-amber-400 text-transparent bg-clip-text mb-4">
               {blog.title}
             </h1>
 
             {/* Meta Info */}
-            <div className="flex flex-wrap items-center text-sm text-gray-600 mb-6 gap-4">
+            <div className="flex flex-wrap items-center text-sm text-gray-400 mb-6 gap-4">
               <span className="flex items-center gap-1">
                 <Clock className="w-4 h-4" />
                 {new Date(blog.createdAt).toLocaleString()}
@@ -194,13 +203,13 @@ export default function BlogDetailPage() {
             {/* Content */}
             <motion.div
               ref={contentRef}
-              className="prose prose-lg max-w-none text-gray-800 leading-relaxed"
+              className="prose prose-lg max-w-none text-gray-200 leading-relaxed"
               dangerouslySetInnerHTML={{ __html: cleanContent }}
             />
           </motion.div>
 
           {/* Actions */}
-          <div className="flex flex-wrap gap-3 text-black items-center">
+          <div className="flex flex-wrap gap-3 text-gray-200 items-center">
             <LikeButton blogId={blog._id} />
             <DisLikeButton blogId={blog._id} />
             <CommentButton blogId={blog._id} />
@@ -230,16 +239,16 @@ export default function BlogDetailPage() {
 
         {/* Author Sidebar (Desktop) */}
         {authorData && (
-          <aside className="hidden md:flex flex-col items-center bg-white shadow-lg rounded-xl p-4 h-fit sticky top-24">
+          <aside className="hidden md:flex flex-col items-center bg-white/10 backdrop-blur-2xl shadow-2xl rounded-xl p-4 h-fit sticky mt-3 top-24">
             <img
               src={authorData.imageUrl}
               alt={authorData.fullName}
               className="w-20 h-20 rounded-full object-cover"
             />
-            <h3 className="mt-3 font-bold text-center">
+            <h3 className="mt-3 font-bold text-center text-gray-200">
               {authorData.fullName}
             </h3>
-            <p className="text-gray-500 text-sm text-center">
+            <p className="text-gray-400 text-sm text-center">
               {authorData.emailAddress}
             </p>
             <button
@@ -258,10 +267,10 @@ export default function BlogDetailPage() {
       {/* 📱 Mobile Author Modal */}
       {mobileAuthorOpen && authorData && (
         <div className="fixed inset-0 bg-black/50 flex justify-center items-center z-50 p-4">
-          <div className="bg-white p-6 rounded-xl shadow-lg w-full max-w-sm relative">
+          <div className="bg-white/10 backdrop-blur-2xl p-6 rounded-xl shadow-2xl w-full max-w-sm relative">
             <button
               onClick={() => setMobileAuthorOpen(false)}
-              className="absolute top-3 right-3"
+              className="absolute top-3 right-3 text-gray-200"
             >
               <X className="w-5 h-5" />
             </button>
@@ -270,10 +279,10 @@ export default function BlogDetailPage() {
               alt={authorData.fullName}
               className="w-20 h-20 rounded-full object-cover mx-auto"
             />
-            <h3 className="mt-3 text-center font-bold">
+            <h3 className="mt-3 text-center font-bold text-gray-200">
               {authorData.fullName}
             </h3>
-            <p className="text-gray-500 text-sm text-center">
+            <p className="text-gray-400 text-sm text-center">
               {authorData.emailAddress}
             </p>
             <button
@@ -284,12 +293,10 @@ export default function BlogDetailPage() {
             </button>
             <div className="mt-3">
               <FavouriteButton writerId={blog.authorId} />
-
-              {/* <LikeButton /> */}
             </div>
           </div>
         </div>
       )}
-    </>
+    </div>
   );
 }
