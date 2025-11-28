@@ -79,33 +79,36 @@ const NavelmsPage = () => {
   ];
 
   // Add dashboards based on role
-  if (isLoaded) {
-    const role = user?.publicMetadata?.role;
+if (isLoaded && user) {
+  const role = user?.publicMetadata?.role;
 
-    if (role === "admin") {
-      sections.push(
-        {
-          title: "Admin Dashboard",
-          icon: <FaTachometerAlt className="text-4xl text-amber-400" />,
-          description: "Manage users, posts, and analytics.",
-          link: "/admin",
-        },
-        {
-          title: "Writer Dashboard",
-          icon: <FaPenFancy className="text-4xl text-amber-400" />,
-          description: "Access and manage your blog posts.",
-          link: "/writer/dashboard",
-        }
-      );
-    } else if (role === "writer") {
-      sections.push({
-        title: "Writer Dashboard",
+  // If admin, show admin + writer dashboards
+  if (role === "admin") {
+    sections.push(
+      {
+        title: "Admin Dashboard",
         icon: <FaTachometerAlt className="text-4xl text-amber-400" />,
+        description: "Manage users, posts, and analytics.",
+        link: "/admin",
+      },
+      {
+        title: "Writer Dashboard",
+        icon: <FaPenFancy className="text-4xl text-amber-400" />,
         description: "Access and manage your blog posts.",
         link: "/writer/dashboard",
-      });
-    }
+      }
+    );
+  } else {
+    // For all other users (including writers without roles)
+    sections.push({
+      title: "Writer Dashboard",
+      icon: <FaTachometerAlt className="text-4xl text-amber-400" />,
+      description: "Access and manage your blog posts.",
+      link: "/writer/dashboard",
+    });
   }
+}
+
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-[#0b0b0d] via-[#121214] to-[#1a1a1f] py-20 px-5">
